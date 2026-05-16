@@ -333,7 +333,7 @@ export default function Home() {
             </Box>
           </div>
 
-          <aside className="space-y-3 w-full max-w-none lg:max-w-[220px] justify-self-stretch lg:justify-self-auto order-3 md:col-span-2 lg:col-span-1">
+          <aside className="space-y-3 w-full max-w-none lg:max-w-[220px] justify-self-stretch lg:justify-self-auto order-1 lg:order-3 md:col-span-2 lg:col-span-1">
             <Box title="welcome">
               <div className="text-[12px] space-y-2 leading-relaxed break-words">
                 <p className="font-bold tracking-wide">RAYCCOLE</p>
