@@ -78,6 +78,10 @@ function Box({
 
 export default function Home() {
   const [showHornetsInfo, setShowHornetsInfo] = useState(false);
+  const [showSelvedgeBuy, setShowSelvedgeBuy] = useState(false);
+  const [showSelvedgeBid, setShowSelvedgeBid] = useState(false);
+  const [bidAmount, setBidAmount] = useState("");
+  const [bidSubmitted, setBidSubmitted] = useState(false);
 
   return (
     <main
@@ -184,19 +188,97 @@ export default function Home() {
                   </p>
 
                   <div className="flex flex-col min-[380px]:flex-row flex-wrap gap-2">
-                    <button className="border border-zinc-700 bg-[#f5e5c8] px-4 py-1 text-[12px] font-bold inline-flex items-center justify-center gap-1 hover:bg-[#ead8b4]">
+                    <button
+                      onClick={() => {
+                        setShowSelvedgeBid(!showSelvedgeBid);
+                        setShowSelvedgeBuy(false);
+                      }}
+                      className="border border-zinc-700 bg-[#f5e5c8] px-4 py-1 text-[12px] font-bold inline-flex items-center justify-center gap-1 hover:bg-[#ead8b4]"
+                    >
                       BID NOW
                     </button>
 
-                    <a
-                      href="https://open.spotify.com/artist/4O76Ib6QQ4XfZ6auhm16AG?si=DQ_-VwDNRdiocuA7oCKuNQ&nd=1&dlsi=7593ae42b3934bc5"
-                      target="_blank"
+                    <button
+                      onClick={() => {
+                        setShowSelvedgeBuy(!showSelvedgeBuy);
+                        setShowSelvedgeBid(false);
+                      }}
                       className="border border-zinc-700 bg-[#efefef] px-4 py-1 text-[12px] font-bold inline-flex items-center justify-center gap-1 hover:bg-[#dddddd]"
                     >
                       <Disc3 className="h-3.5 w-3.5" />
                       BUY NOW
-                    </a>
+                    </button>
                   </div>
+
+                  {showSelvedgeBid && (
+                    <div className="mt-3 border border-zinc-700 bg-[#fffdf3] p-3 text-[12px] max-w-[500px]">
+                      <div className="font-bold mb-2">Place your bid:</div>
+                      <p className="text-[11px] leading-relaxed mb-2 text-zinc-700">
+                        enter your highest offer for this mint condition selvedge listing.
+                      </p>
+
+                      <div className="flex flex-col min-[380px]:flex-row gap-2 mb-3">
+                        <input
+                          value={bidAmount}
+                          onChange={(event) => setBidAmount(event.target.value)}
+                          placeholder="$40"
+                          className="border border-zinc-700 bg-white px-3 py-1 text-[12px] w-full min-[380px]:w-[120px]"
+                        />
+
+                        <button
+                          onClick={() => {
+                            setBidSubmitted(true);
+                            setShowSelvedgeBuy(true);
+                          }}
+                          className="border border-zinc-700 bg-[#efefef] px-4 py-1 text-[12px] font-bold hover:bg-[#dddddd]"
+                        >
+                          SUBMIT BID
+                        </button>
+                      </div>
+
+                      {bidSubmitted && (
+                        <p className="text-[11px] font-bold text-green-700">
+                          the seller has accepted your bid. buy now!
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {showSelvedgeBuy && (
+                    <div className="mt-3 border border-zinc-700 bg-[#fffdf3] p-3 text-[12px] max-w-[500px]">
+                      <div className="font-bold mb-2">Choose your checkout lane:</div>
+
+                      <div className="flex flex-col min-[380px]:flex-row gap-2 mb-3">
+                        <a
+                          href="https://open.spotify.com/album/1Xr8QUUPpDjUlv7VuneU1W?si=iL__c87mQPebtGdyixasVw"
+                          target="_blank"
+                          className="border border-zinc-700 bg-[#1db954] px-4 py-1 font-bold text-center text-black hover:brightness-95"
+                        >
+                          buy with spotify
+                        </a>
+
+                        <a
+                          href="https://music.apple.com/us/album/selvedge-ep/1835803117"
+                          target="_blank"
+                          className="border border-zinc-700 bg-[#efefef] px-4 py-1 font-bold text-center hover:bg-[#dddddd]"
+                        >
+                          buy with apple music
+                        </a>
+                      </div>
+
+                      <div className="border border-zinc-400 bg-white p-2">
+                        <p className="font-bold mb-1">mini player</p>
+                        <iframe
+                          src="https://open.spotify.com/embed/album/1Xr8QUUPpDjUlv7VuneU1W?utm_source=generator&theme=0"
+                          width="100%"
+                          height="352"
+                          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                          loading="lazy"
+                          className="border-0"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </Box>
@@ -372,7 +454,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="https://music.apple.com/us/artist/rayccole/1737356908"
+                  href="https://music.apple.com/us/album/selvedge-ep/1835803117"
                   target="_blank"
                   className="block text-blue-700 underline font-bold"
                 >
@@ -380,7 +462,7 @@ export default function Home() {
                 </a>
 
                 <a
-                  href="https://open.spotify.com/artist/4O76Ib6QQ4XfZ6auhm16AG?si=DQ_-VwDNRdiocuA7oCKuNQ&nd=1&dlsi=7593ae42b3934bc5"
+                  href="https://open.spotify.com/album/1Xr8QUUPpDjUlv7VuneU1W?si=iL__c87mQPebtGdyixasVw"
                   target="_blank"
                   className="block text-blue-700 underline font-bold"
                 >
