@@ -1,6 +1,29 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
+
+// IMPORTANT:
+// In src/app/layout.tsx add this metadata:
+//
+// export const metadata = {
+//   metadataBase: new URL("https://rayccole.com"),
+//   title: "rayccole's website",
+//   description: "Official website for rayccole",
+//   openGraph: {
+//     title: "rayccole's website",
+//     description: "Official website for rayccole",
+//     images: ["/rayccole-ebay-picturelogo.png"],
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "rayccole's website",
+//     description: "Official website for rayccole",
+//     images: ["/rayccole-ebay-picturelogo.png"],
+//   },
+// };
+//
+// Then place your image inside /public named:
+// rayccole-ebay-picturelogo.png
 import { Disc3, ShoppingBag, Mail } from "lucide-react";
 
 const youtubeVideo = "https://www.youtube.com/embed/ymKCEzX4HNs";
