@@ -81,7 +81,8 @@ export default function Home() {
   const [showSelvedgeBuy, setShowSelvedgeBuy] = useState(false);
   const [showSelvedgeBid, setShowSelvedgeBid] = useState(false);
   const [bidAmount, setBidAmount] = useState("");
-  const [bidSubmitted, setBidSubmitted] = useState(false);
+  const [bidMessage, setBidMessage] = useState("");
+  const [bidAccepted, setBidAccepted] = useState(false);
 
   return (
     <main
@@ -220,14 +221,33 @@ export default function Home() {
                       <div className="flex flex-col min-[380px]:flex-row gap-2 mb-3">
                         <input
                           value={bidAmount}
-                          onChange={(event) => setBidAmount(event.target.value)}
+                          onChange={(event) => {
+                            setBidAmount(event.target.value);
+                            setBidMessage("");
+                            setBidAccepted(false);
+                          }}
                           placeholder="$40"
                           className="border border-zinc-700 bg-white px-3 py-1 text-[12px] w-full min-[380px]:w-[120px]"
                         />
 
                         <button
                           onClick={() => {
-                            setBidSubmitted(true);
+                            const numericBid = Number(bidAmount.replace(/[^0-9.]/g, ""));
+
+                            if (!numericBid || numericBid < 40) {
+                              setBidMessage("the seller has rejected ur brokeass. please try again and don't lowball this time");
+                              setBidAccepted(false);
+                              setShowSelvedgeBuy(false);
+                              return;
+                            }
+
+                            if (numericBid > 1000) {
+                              setBidMessage("damn you lowkey glazin but the seller has accepted your offer");
+                            } else {
+                              setBidMessage("the seller has accepted your bid. buy now!");
+                            }
+
+                            setBidAccepted(true);
                             setShowSelvedgeBuy(true);
                           }}
                           className="border border-zinc-700 bg-[#efefef] px-4 py-1 text-[12px] font-bold hover:bg-[#dddddd]"
@@ -236,15 +256,15 @@ export default function Home() {
                         </button>
                       </div>
 
-                      {bidSubmitted && (
-                        <p className="text-[11px] font-bold text-green-700">
-                          the seller has accepted your bid. buy now!
+                      {bidMessage && (
+                        <p className={`text-[11px] font-bold ${bidAccepted ? "text-green-700" : "text-red-700"}`}>
+                          {bidMessage}
                         </p>
                       )}
                     </div>
                   )}
 
-                  {showSelvedgeBuy && (
+                  {bidAccepted && showSelvedgeBuy && (
                     <div className="mt-3 border border-zinc-700 bg-[#fffdf3] p-3 text-[12px] max-w-[500px]">
                       <div className="font-bold mb-2">Choose your checkout lane:</div>
 
