@@ -129,12 +129,33 @@ export default function Home() {
 
           <div className="space-y-4 min-w-0 order-1 md:order-2">
             <Box title="featured listing">
-              <div className="grid sm:grid-cols-[1fr_180px] gap-4">
-                <div className="min-w-0">
+              <div className="flex flex-col md:flex-row gap-4 items-start">
+                <div className="min-w-0 flex-1">
                   <p className="text-[11px] text-zinc-600 mb-1">Current Listing</p>
                   <h1 className="text-[26px] sm:text-[34px] font-black leading-tight mb-2 tracking-tight">
                     SELVEDGE
                   </h1>
+
+                  <div className="flex flex-col sm:flex-row gap-4 items-start mb-4">
+                    <div className="border border-zinc-700 bg-[#f3f3f3] p-2 w-fit max-w-full shrink-0">
+                      <img
+                        src="/COVER.jpg"
+                        alt="Selvedge album artwork"
+                        className="w-full max-w-[320px] object-cover border border-zinc-700"
+                      />
+                    </div>
+
+                    <div className="border border-zinc-700 bg-[#f7f7f7] p-3 text-[12px] w-full max-w-[180px] h-fit">
+                      <div className="font-bold mb-2">Listing Info</div>
+                      <div className="space-y-[2px] leading-snug">
+                        <p>Starting Bid: $40</p>
+                        <p>Length: 13 minutes</p>
+                        <p>Inseams: 5 songs</p>
+                        <p>Seller: rayccole</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <p className="text-[12px] sm:text-[13px] leading-relaxed mb-4 max-w-[500px]">
                     need some new pants? place your bids for sum mint condition selvedge denim here.
                   </p>
@@ -153,14 +174,6 @@ export default function Home() {
                       BUY NOW
                     </a>
                   </div>
-                </div>
-
-                <div className="border border-zinc-700 bg-[#f7f7f7] p-3 text-[12px] min-w-0">
-                  <div className="font-bold mb-2">Listing Info</div>
-                  <p>Starting Bid: $40</p>
-                  <p>Length: 13 minutes</p>
-                  <p>Inseams: 5 songs</p>
-                  <p>Seller: rayccole</p>
                 </div>
               </div>
             </Box>
