@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 
 // IMPORTANT:
 // In src/app/layout.tsx add this metadata:
@@ -77,6 +77,9 @@ function Box({
 }
 
 export default function Home() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [showWelcomePopup, setShowWelcomePopup] = useState(true);
   const [showHornetsInfo, setShowHornetsInfo] = useState(false);
   const [showSelvedgeBuy, setShowSelvedgeBuy] = useState(false);
   const [showSelvedgeBid, setShowSelvedgeBid] = useState(false);
@@ -84,11 +87,79 @@ export default function Home() {
   const [bidMessage, setBidMessage] = useState("");
   const [bidAccepted, setBidAccepted] = useState(false);
 
+  const startBackgroundMusic = async () => {
+    if (!audioRef.current) return;
+
+    try {
+      audioRef.current.volume = 0.35;
+      await audioRef.current.play();
+      setIsMusicPlaying(true);
+    } catch (error) {
+      console.log("Music playback was blocked until the user interacts with the page.", error);
+    }
+  };
+
+  const toggleBackgroundMusic = async () => {
+    if (!audioRef.current) return;
+
+    if (isMusicPlaying) {
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
+      return;
+    }
+
+    await startBackgroundMusic();
+  };
+
   return (
     <main
       className="min-h-screen bg-[#c0c0c0] text-black overflow-x-hidden"
       style={{ fontFamily: "Verdana, Arial, sans-serif" }}
     >
+      <audio ref={audioRef} src="/background-music.mp3" loop preload="auto" />
+
+      {showWelcomePopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/35 px-4">
+          <div className="w-full max-w-[340px] border-2 border-black bg-[#c0c0c0] shadow-[4px_4px_0_rgba(0,0,0,0.45)]">
+            <div className="flex items-center justify-between bg-[#000080] px-2 py-1 text-[12px] font-bold text-white">
+              <span>rayccole.exe</span>
+              <button
+                onClick={() => setShowWelcomePopup(false)}
+                className="border border-black bg-[#efefef] px-1 text-[10px] leading-none text-black shadow-[1px_1px_0_#fff_inset,-1px_-1px_0_#808080_inset]"
+              >
+                X
+              </button>
+            </div>
+
+            <div className="bg-[#efefef] p-4 text-[12px]">
+              <div className="mb-4 flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center border border-black bg-white text-[20px]">
+                  ♫
+                </div>
+                <div>
+                  <p className="mb-1 font-bold">welcome to rayccole's website</p>
+                  <p className="text-[11px] leading-relaxed">
+                    click okay to enter and start the site music.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={async () => {
+                    setShowWelcomePopup(false);
+                    await startBackgroundMusic();
+                  }}
+                  className="min-w-[76px] border border-black bg-[#efefef] px-4 py-1 text-[12px] font-bold shadow-[1px_1px_0_#fff_inset,-1px_-1px_0_#808080_inset] hover:bg-[#dddddd]"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="w-full bg-[#000080] text-white text-[11px] sm:text-[12px] px-2 py-1 border-b border-black whitespace-nowrap overflow-hidden text-ellipsis">
         ✳ Rayccole — Personal Trading Community — Netscape
       </div>
@@ -235,7 +306,7 @@ export default function Home() {
                             const numericBid = Number(bidAmount.replace(/[^0-9.]/g, ""));
 
                             if (!numericBid || numericBid < 40) {
-                              setBidMessage("the seller has rejected ur brokeass. please try again and don't lowball this time");
+                              setBidMessage("the seller has rejected ur offer. please try again and don't lowball this time");
                               setBidAccepted(false);
                               setShowSelvedgeBuy(false);
                               return;
@@ -264,7 +335,7 @@ export default function Home() {
                     </div>
                   )}
 
-                  {bidAccepted && showSelvedgeBuy && (
+                  {showSelvedgeBuy && (
                     <div className="mt-3 border border-zinc-700 bg-[#fffdf3] p-3 text-[12px] max-w-[500px]">
                       <div className="font-bold mb-2">Choose your checkout lane:</div>
 
@@ -285,6 +356,10 @@ export default function Home() {
                           buy with apple music
                         </a>
                       </div>
+
+                      <p className="mb-3 text-[10px] leading-relaxed text-zinc-600 italic">
+                        *no real money is being exchanged. this checkout experience is purely for aesthetics*
+                      </p>
 
                       <div className="border border-zinc-400 bg-white p-2">
                         <p className="font-bold mb-1">mini player</p>
@@ -466,6 +541,14 @@ export default function Home() {
                 </a>
 
                 <a
+                  href="https://www.tiktok.com/@rayccole"
+                  target="_blank"
+                  className="block text-blue-700 underline font-bold"
+                >
+                  tiktok
+                </a>
+
+                <a
                   href="https://www.facebook.com/rayccolee/"
                   target="_blank"
                   className="block text-blue-700 underline font-bold"
@@ -507,6 +590,15 @@ export default function Home() {
           </aside>
         </div>
       </div>
+          <button
+        onClick={toggleBackgroundMusic}
+        className="fixed bottom-4 right-4 z-40 flex h-11 w-11 items-center justify-center border-2 border-black bg-[#efefef] text-black shadow-[2px_2px_0_rgba(0,0,0,0.35)] hover:bg-[#dddddd]"
+        title={isMusicPlaying ? "mute music" : "play music"}
+      >
+        <span className="text-[18px] leading-none">
+          {isMusicPlaying ? "🔊" : "🔇"}
+        </span>
+      </button>
     </main>
   );
 }
